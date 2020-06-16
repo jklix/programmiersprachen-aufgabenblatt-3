@@ -226,7 +226,7 @@ class List {
     }
 
     void pop() {
-      delete(first_);
+      //delete(first_);
       first_ = nullptr;
       last_ = nullptr;
       size_ = 0;
@@ -234,17 +234,22 @@ class List {
 
     /* ... */
     void pop_front() {
+      std::cout << first_ <<"\n";
+      std::cout << last_ <<"\n";
       if(empty()) {
         throw "List is empty";
       }
-      if (size_ = 1) pop();
+      if (size_ == 1) pop();
       else {
         ListNode<T>* del = first_;
         ListNode<T>* prv = first_->next;
-        delete(del);
         first_ = prv;
         prv -> prev = nullptr;
+        //delete(del); 
+        size_--;
       }
+      std::cout << first_ <<"\n";
+      std::cout << last_ <<"\n";
     }
 
     /* ... */
@@ -256,9 +261,10 @@ class List {
       else {
         ListNode<T>* del = last_;
         ListNode<T>* prv = last_->prev;
-        delete(del);
+        //delete(del);
         last_ = prv;
         prv -> next = nullptr;
+        size_--;
       }
     }
 
