@@ -194,15 +194,42 @@ class List {
 
     //TODO: member function reverse (Aufgabe 3.7 - Teil 1)
 
+    void push(T const& element) {
+      ListNode<T>* nw = new ListNode<T>{element, nullptr, nullptr};
+      first_ = nw;
+      last_ = nw;
+      size_ = 1;
+    }
 
     /* ... */
     void push_front(T const& element) {
-      // TODO: push_front-method (Aufgabe 3.3)
+      if(empty()) push(element);
+      else {
+        ListNode<T>* fst = first_; 
+        ListNode<T>* nw = new ListNode<T>{element, nullptr, fst};
+        size_++;
+        first_ = nw;
+        fst->prev = nw;
+      }
     }
 
     /* ... */
     void push_back(T const& element) {
-      // TODO: push_back-method (Aufgabe 3.3)
+      if(empty()) push(element);
+      else {
+        ListNode<T>* lst = last_;
+        ListNode<T>* nw = new ListNode<T>{element, lst, nullptr};
+        size_++;
+        last_ = nw;
+        lst->next = nw;
+      }
+    }
+
+    void pop() {
+      delete(first_);
+      first_ = nullptr;
+      last_ = nullptr;
+      size_ = 0;
     }
 
     /* ... */
@@ -210,8 +237,14 @@ class List {
       if(empty()) {
         throw "List is empty";
       }
-
-      // TODO: remainder of pop_front-method (Aufgabe 3.3)
+      if (size_ = 1) pop();
+      else {
+        ListNode<T>* del = first_;
+        ListNode<T>* prv = first_->next;
+        delete(del);
+        first_ = prv;
+        prv -> prev = nullptr;
+      }
     }
 
     /* ... */
@@ -219,8 +252,14 @@ class List {
       if(empty()) {
         throw "List is empty";
       }
-
-      // TODO: remainder of pop_back-method (Aufgabe 3.3)
+      if (size_ = 1) pop();
+      else {
+        ListNode<T>* del = last_;
+        ListNode<T>* prv = last_->prev;
+        delete(del);
+        last_ = prv;
+        prv -> next = nullptr;
+      }
     }
 
     /* ... */
