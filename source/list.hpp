@@ -129,7 +129,7 @@ class List {
     // not fully implemented yet
     // TODO: do not forget about the initialiser list! (Aufgabe 3.2)
     /* ... */
-    List() {}
+    List(int s = 0, ListNode<T>* p = nullptr): size_(s), first_(p), last_(p) {}
 
     // test and implement:
     //TODO: Copy-Konstruktor using Deep-Copy semantics (Aufgabe 3.5)
