@@ -126,9 +126,7 @@ class List {
     using const_reference = T const&;
     using iterator        = ListIterator<T>;
 
-    // not fully implemented yet
-    // TODO: do not forget about the initialiser list! (Aufgabe 3.2)
-    /* ... */
+    /* default construction of an empty list with size zero and first_ as well as last_ being nullpointer */
     List(int s = 0, ListNode<T>* p = nullptr): size_(s), first_(p), last_(p) {}
 
     // test and implement:
@@ -243,18 +241,15 @@ class List {
       // TODO: remainder of back-method (Aufgabe 3.3)
     }
 
-    /* ... */
+    /* checks if the size of the list is zero and acts and acts accordingly */
     bool empty() const {
-
-      // TODO: empty-method (Aufgabe 3.2)
-      return false;
+      return (size_ == 0) ? true : false;
     };
 
 
-    /* ... */
-    std::size_t size() const{
-      // TODO: size-method (Aufgabe 3.2)      
-      return 27;
+    /* returns the size of the list */
+    std::size_t size() const{     
+      return size_;
   };
 
 
