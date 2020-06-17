@@ -129,9 +129,14 @@ class List {
     /* default construction of an empty list with size zero and first_ as well as last_ being nullpointer */
     List(int s = 0, ListNode<T>* p = nullptr): size_(s), first_(p), last_(p) {}
 
+    /*
+    Copy constructor creates a new, empty list and a pointer to a node. 
+    That pointer gets the value of the node of the original list which is copied into our new list by push_back() since we start at the beginning.
+    After that the pointer is set to the next node in the original list
+    */
     List(List const& list): size_{0}, first_{nullptr}, last_{nullptr} {
-      ListNode<T> *runner = list->first_;
-      while(size_ < list->size_) {
+      ListNode<T> *runner = list.first_;
+      while(size_ < list.size_) {
         push_back(runner->value);
         runner = runner->next;
       }

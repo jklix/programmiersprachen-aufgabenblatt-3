@@ -26,7 +26,7 @@ ListNode<T>* get_last_pointer(List<T> const& list_to_test) {return list_to_test.
 #include "sub_tests/pop_front.test"
 #include "sub_tests/pop_back.test"
 
-//test case definitions for clear
+//test case definitions for the clear method
 TEST_CASE("testing clear()","[clear]") {
   List<int> list{};
   list.clear();
@@ -52,6 +52,23 @@ TEST_CASE("testing clear()","[clear]") {
 //test cases for element access of list
 #include "sub_tests/front.test"
 #include "sub_tests/back.test"
+
+//test cases for the deep-copy method of the list
+TEST_CASE("testing copy()", "[copy]") {
+  List<int> l{};
+  List<int> l1(l);
+  REQUIRE(l1.empty());
+  l.push_front(4);
+  List<int>l2(l);
+  REQUIRE(l2.empty() != true);
+  l2.pop();
+  REQUIRE(l2.empty());
+  //I can't compare values since first_ and last_ are private, so only the size is comparable
+  l.push_back(21);
+  l.push_front(10);
+  List<int> l3(l);
+  REQUIRE(l3.size() == l.size());
+}
 
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"
