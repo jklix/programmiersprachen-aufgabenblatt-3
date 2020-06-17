@@ -26,8 +26,29 @@ ListNode<T>* get_last_pointer(List<T> const& list_to_test) {return list_to_test.
 #include "sub_tests/pop_front.test"
 #include "sub_tests/pop_back.test"
 
-//test case definitions for 
-
+//test case definitions for clear
+TEST_CASE("testing clear()","[clear]") {
+  List<int> list{};
+  list.clear();
+  REQUIRE(list.empty());
+  list.push_back(3);
+  list.clear();
+  REQUIRE(list.empty());
+  list.push_front(5);
+  list.clear();
+  REQUIRE(list.empty());
+  list.push_back(-1);
+  list.push_front(0);
+  list.clear();
+  REQUIRE(list.empty());
+  list.push_front(5);
+  list.push_back(20);
+  list.push_front(5);
+  list.push_back(4);
+  list.push_back(-3);
+  list.clear();
+  REQUIRE(list.empty());
+}
 //test cases for element access of list
 #include "sub_tests/front.test"
 #include "sub_tests/back.test"

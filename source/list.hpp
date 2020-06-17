@@ -160,10 +160,10 @@ class List {
       // make use of operator==
     }
 
-    /* ... */
+    /* calls clear() to destroy the list */
     ~List() {
-      //TODO: Implement via clear-Method (Aufgabe 3.4)
-    } //can not really be tested
+      clear();
+    }
 
     /* ... */
     ListIterator<T> begin() {
@@ -179,9 +179,12 @@ class List {
       return {};
     }
 
-    /* ... */ 
-    // test and implement:
-    //TODO: clear()-Method (Aufgabe 3.4)
+    /* calls pop_front() as long as the size isn't 0 */ 
+    void clear() {
+      while (size_ != 0) {
+        pop_front();
+      }
+    }
 
 
     /* ... */
@@ -193,7 +196,7 @@ class List {
     /* ... */
 
     //TODO: member function reverse (Aufgabe 3.7 - Teil 1)
-    
+
     /*
     small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
     prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1
@@ -232,6 +235,7 @@ class List {
         size_++;
       }
     }
+
     /*
     small method that gets called if pop_front() or pop_back() is called and list size is 1
     it deletes the single list object, sets the pointers from first_ and last_ to nullptr and sets the size to zero
@@ -283,22 +287,20 @@ class List {
       }
     }
 
-    /* ... */
+    /* returns the value of the first node */
     T& front() {
       if(empty()) {
         throw "List is empty";
       }
-
-      // TODO: remainder of front-method (Aufgabe 3.3)
+      return first_->value;
     }
 
-    /* ... */
+    /* returns the value of the last node*/
     T& back() {
       if(empty()) {
         throw "List is empty";
       }
-
-      // TODO: remainder of back-method (Aufgabe 3.3)
+      return last_->value;
     }
 
     /* checks if the size of the list is zero and acts and acts accordingly */
