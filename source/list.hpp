@@ -193,49 +193,62 @@ class List {
     /* ... */
 
     //TODO: member function reverse (Aufgabe 3.7 - Teil 1)
-
+    
+    /*
+    small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
+    prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1
+    */
     void push(T const& element) {
-      ListNode<T>* nw = new ListNode<T>{element, nullptr, nullptr};
-      first_ = nw;
-      last_ = nw;
+      ListNode<T>* nw = new ListNode<T>{element};
+      first_ = last_ = nw;
       size_ = 1;
     }
 
-    /* ... */
+    /*
+    tests if the list is empty, if it is it calls push()
+    if not we make a of the first_ pointer and create a new ListNode containing "element" since we know that the node will be added at the front of the list,
+    we can set the prev pointer of the node to nullptr and the next pointer to our previous first_ we then set the pointer of the prev pointer of the former first node
+    to the newly added node and set first_ to our new first node. After that we increment the size of the list by one.
+    */
     void push_front(T const& element) {
       if(empty()) push(element);
       else {
         ListNode<T>* fst = first_; 
         ListNode<T>* nw = new ListNode<T>{element, nullptr, fst};
+        fst->prev = first_ = nw;
         size_++;
-        first_ = nw;
-        fst->prev = nw;
       }
     }
 
-    /* ... */
+    /* 
+    we do the exact same thing as in push_front(), with the exception that "first" is swapped with "last", "front" with "back" and "prev" and next" have switched places.
+    */
     void push_back(T const& element) {
       if(empty()) push(element);
       else {
         ListNode<T>* lst = last_;
         ListNode<T>* nw = new ListNode<T>{element, lst, nullptr};
+        lst->next = last_ = nw;
         size_++;
-        last_ = nw;
-        lst->next = nw;
       }
     }
-
+    /*
+    small method that gets called if pop_front() or pop_back() is called and list size is 1
+    it deletes the single list object, sets the pointers from first_ and last_ to nullptr and sets the size to zero
+    */
     void pop() {
-      //delete(first_);
-      first_ = nullptr;
-      last_ = nullptr;
+      delete(first_);
+      first_ = last_ = nullptr;
       size_ = 0;
     }
 
-    /* ... */
+    /* 
+    tests if the list is empty, if so it throws an exception
+    if the size of the list is one it calls pop()
+    in all other cases it makes a copy of the pointers first_ and first_->next, the first two nodes in the list,
+    sets first_ to the second node and deletes the former first node, then sets the prev-pointer of the new first node to nullptr and increments size_ by one
+    */
     void pop_front() {
-      std::cout << first_ <<"\n";
-      std::cout << last_ <<"\n";
       if(empty()) {
         throw "List is empty";
       }
@@ -245,26 +258,28 @@ class List {
         ListNode<T>* prv = first_->next;
         first_ = prv;
         prv -> prev = nullptr;
-        //delete(del); 
+        delete(del); 
         size_--;
       }
-      std::cout << first_ <<"\n";
-      std::cout << last_ <<"\n";
     }
 
-    /* ... */
+    /*
+    does basically as pop_front(), with the exception that we now use the last and second last node of our list
+    so we make the copys, set last_ to the second lst node, delete the former last node and set the next pointer of the new last node to nullptr and increments size_ by one
+    */
     void pop_back() {
       if(empty()) {
         throw "List is empty";
       }
-      if (size_ = 1) pop();
+      if (size_ == 1) pop();
       else {
         ListNode<T>* del = last_;
         ListNode<T>* prv = last_->prev;
-        //delete(del);
         last_ = prv;
         prv -> next = nullptr;
+        delete(del);
         size_--;
+        
       }
     }
 
