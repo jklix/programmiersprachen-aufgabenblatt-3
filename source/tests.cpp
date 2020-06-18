@@ -69,6 +69,22 @@ TEST_CASE("testing copy()", "[copy]") {
   List<int> l3(l);
   REQUIRE(l3.size() == l.size());
 }
+TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
+  List<int> l{};
+  List<int> l1(l);
+  REQUIRE(l.comp_list(l1));
+  l.push_front(1);
+  REQUIRE(l.comp_list(l1) == false);
+  l1.push_back(1);
+  REQUIRE(l.comp_list(l1));
+  l.push_back(3);
+  REQUIRE(l.comp_list(l1) == false);
+  l1.push_front(3);
+  REQUIRE(l.comp_list(l1) == false);
+  l.push_back(1);
+  l1.push_front(1);
+  REQUIRE(l.comp_list(l1));
+}
 
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"

@@ -323,7 +323,28 @@ class List {
     /* returns the size of the list */
     std::size_t size() const{     
       return size_;
-  };
+    };
+
+    /* 
+    compares two lists and checks if they share the same element-values at the same postition 
+    if the element values of the lists are identical, it returns true.
+    */
+    bool comp_list(List const& l) {
+      if (size_ != l.size_) return false;
+      //the condition below could be commented out since the method would handle it correctly anyway, however it is more efficient to do it like this
+      if (size_ == 0) return true;
+      ListNode<T>* rnr_l1 = new ListNode<T>;
+      ListNode<T>* rnr_l2 = new ListNode<T>;
+      rnr_l1 = first_;
+      rnr_l2 = l.first_;
+      while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
+        if (rnr_l1->value != rnr_l2->value) return false;
+        rnr_l1 = rnr_l1->next;
+        rnr_l2 = rnr_l2->next;
+      }
+      if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
+      return false;
+    };
 
 
   // list members
