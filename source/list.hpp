@@ -361,6 +361,20 @@ class List {
       return false;
     };
 
+    /*
+    related to 3.7
+    small helper function that prints the values of the elements of the list front to back
+    */
+    void pt_list() {
+      ListNode<T> rnr = new ListNode<T>;
+      rnr = first_;
+      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: ";
+      while (rnr != nullptr) {
+        std::cout << "[ " << rnr->value << " ], ";
+      }
+      std::cout << "\n";
+    }
+
 
   // list members
   private: 
@@ -369,10 +383,14 @@ class List {
     ListNode<T>* last_;
 };
 
-/* ... */
-//TODO: Freie Funktion reverse 
-//(Aufgabe 3.7 - Teil 2, benutzt Member-Funktion reverse)
-
+/* 
+reverse() first creates a new List, deep-copying "l" , then it calls the member function reverse() on the newly created list and returns it.
+ */
+template<typename T>
+List<T> reverse(List<T>& l) {
+  List<T> revl(l);
+  return (revl.reverse());
+}
 /* ... */
 //TODO: Freie Funktion operator+ (3.10 - Teil 2)
 
