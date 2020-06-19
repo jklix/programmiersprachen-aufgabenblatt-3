@@ -99,7 +99,7 @@ TEST_CASE("basic testing of reverse()","[reverse]") {
   l.pt_list();
   l.reverse();
   l.pt_list();
-  l.push_front(91);
+  l.push_back(91);
   l.pt_list();
   l.reverse();
   l.pt_list();
