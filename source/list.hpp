@@ -135,7 +135,7 @@ class List {
     After that the pointer is set to the next node in the original list
     */
     List(List const& list): size_{0}, first_{nullptr}, last_{nullptr} {
-      ListNode<T> *runner = list.first_;
+       auto runner = list.first_;
       while(size_ < list.size_) {
         push_back(runner->value);
         runner = runner->next;
@@ -204,23 +204,34 @@ class List {
     /* ... */
     //TODO: member function insert (Aufgabe 3.14)
 
-    /* ... */
+    /*
+    reversing the order of element-values in the list by flipping the pointers of the nodes
+    if the list size is smaller than 2 we don't have to do anything
+    in every other case we have a runner node, starting at "first_" and working its way trough the list, flipping "prev" and "next" pointer using tmp as storage
 
-    //TODO: member function reverse (Aufgabe 3.7 - Teil 1)
+     */
     void reverse() {
       if (size_ < 2) return;
       ListNode<T>* tmp = new ListNode<T>;
-      ListNode<T>* rnr = new ListNode<T>;
-      rnr = first_;
-      for (int i=0; i < size_; i++) {
+      auto rnr = first_;
+      while (rnr != nullptr) {
         tmp = rnr->next;
         rnr->next = rnr->prev;
         rnr->prev = tmp;
         rnr = rnr->prev;
       }
-      first_ = tmp;
-      first_ = last_;
-      last_ = tmp;
+      swapfl();
+    }
+
+    /*
+
+    */
+    void swapfl() {
+      if (first_->next == nullptr) {
+        auto tmp = first_;
+        first_ = last_;
+        last_ = tmp;
+      }
     }
     /*
     small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
@@ -241,7 +252,7 @@ class List {
     void push_front(T const& element) {
       if(empty()) push(element);
       else {
-        ListNode<T>* fst = first_; 
+        auto fst = first_; 
         ListNode<T>* nw = new ListNode<T>{element, nullptr, fst};
         fst->prev = first_ = nw;
         size_++;
@@ -254,7 +265,7 @@ class List {
     void push_back(T const& element) {
       if(empty()) push(element);
       else {
-        ListNode<T>* lst = last_;
+        auto lst = last_;
         ListNode<T>* nw = new ListNode<T>{element, lst, nullptr};
         lst->next = last_ = nw;
         size_++;
@@ -283,8 +294,8 @@ class List {
       }
       if (size_ == 1) pop();
       else {
-        ListNode<T>* del = first_;
-        ListNode<T>* prv = first_->next;
+        auto del = first_;
+        auto prv = first_->next;
         first_ = prv;
         prv -> prev = nullptr;
         delete(del); 
@@ -302,8 +313,8 @@ class List {
       }
       if (size_ == 1) pop();
       else {
-        ListNode<T>* del = last_;
-        ListNode<T>* prv = last_->prev;
+        auto del = last_;
+        auto prv = last_->prev;
         last_ = prv;
         prv -> next = nullptr;
         delete(del);
@@ -348,10 +359,8 @@ class List {
       if (size_ != l.size_) return false;
       //the condition below could be commented out since the method would handle it correctly anyway, however it is more efficient to do it like this
       if (size_ == 0) return true;
-      ListNode<T>* rnr_l1 = new ListNode<T>;
-      ListNode<T>* rnr_l2 = new ListNode<T>;
-      rnr_l1 = first_;
-      rnr_l2 = l.first_;
+      auto rnr_l1 = first_;
+      auto rnr_l2 = l.first_;
       while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
         if (rnr_l1->value != rnr_l2->value) return false;
         rnr_l1 = rnr_l1->next;
@@ -366,14 +375,13 @@ class List {
     small helper function that prints the values of the elements of the list front to back
     */
     void pt_list() {
-      ListNode<T>* rnr = new ListNode<T>;
-      rnr = first_;
-      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: ";
+      auto rnr = first_;
+      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "\n";
       while (rnr != nullptr) {
-        std::cout << "[ " << rnr->value << " ] ";
+        std::cout << rnr->prev << "[ " << rnr->value << " ] " << rnr->next << " ";
         rnr = rnr->next;
       }
-      std::cout << "\n";
+      std::cout << "\n" << last_ <<"\n";
     }
 
 
