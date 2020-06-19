@@ -31,7 +31,7 @@ struct ListIterator {
 
 
   /* DESCRIPTION  operator*() */
-  T&  operator*()  const {
+  T& operator*()  const {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
     }
@@ -135,16 +135,21 @@ class List {
     After that the pointer is set to the next node in the original list
     */
     List(List const& list): size_{0}, first_{nullptr}, last_{nullptr} {
-       auto rnr = list.first_;
+      auto rnr = list.first_;
       while(size_ < list.size_) {
         push_back(rnr->value);
         rnr = rnr->next;
       }
 
     }
-
-    // test and implement:
-    // TODO: Move-Konstruktor (Aufgabe 3.9)
+    /* Implementation of move constructor, based on the provided slides  */
+    List(List&& rhs) {
+      first_ = rhs.first_;
+      last_ = rhs.last_;
+      size_ = rhs.size_;
+      rhs.first_ = rhs.last_ = nullptr;
+      rhs.size_ = 0;
+    }
 
     //TODO: Initializer-List Konstruktor (3.10 - Teil 1)
     /* ... */
@@ -153,7 +158,7 @@ class List {
       //not implemented yet
     }
 
-    /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides  */
+    /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides */
     List& operator=(List const& rhs) {
       auto n(rhs);
       swap(n);
@@ -165,11 +170,12 @@ class List {
     void swap(List& l) {
       std::swap(first_, l.first_);
       std::swap(last_, l.last_);
+      std::swap(size_, l.size_);
     }
 
     /* checks if two lists are equal (in element count and -position) or not using comp_list() and returns a bool based on that */
     bool operator==(List const& rhs) const
-    {
+    { 
       return comp_list(rhs);
     }
 
@@ -392,10 +398,10 @@ class List {
 reverse() first creates a new List, deep-copying "l", then calls the member function reverse() on the newly created list and returns it.
  */
 template<typename T>
-List<T> reverse(List<T>& l) {
+List<T> reverse(List<T> const& l) {
   auto revl(l);
   revl.reverse();
-  return (revl);
+  return revl;
 }
 /* ... */
 //TODO: Freie Funktion operator+ (3.10 - Teil 2)

@@ -88,6 +88,7 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
 TEST_CASE("testing the unifying operator","[unify_operator]") {
   List<int> l{};
   List<int> l1{};
+  REQUIRE(l1 == l);
   l1.push_back(3);
   l.push_front(4);
   auto ltest(l1);
@@ -96,23 +97,35 @@ TEST_CASE("testing the unifying operator","[unify_operator]") {
   l1 = l;
   REQUIRE(l1 == l);
   REQUIRE(l1 != ltest);
-  l1.pop();
+  l1.pop_front();
   REQUIRE(l1 != l);
   REQUIRE(l.size() == 1);
+  REQUIRE(l1.size() == 0);
   l = l1;
-  REQUIRE(l1 == l);
+  l1.pt_list();
+  l.pt_list();
   REQUIRE(l.size() == 0);
+  REQUIRE(l1.size() == 0);
+  REQUIRE(l == l1);
+  l1.pt_list();
+  l.pt_list();
   l.push_back(29);
   l.push_front(31);
   l.push_back(55);
   l.push_front(34);
+  l1.pt_list();
+  l.pt_list();
   REQUIRE(l1 != l);
   l1 = l;
+  l1.pt_list();
+  l.pt_list();
   REQUIRE(l1 == l);
   l1.pop_back();
   REQUIRE(l1 != l);
   l.pop_back();
   REQUIRE(l1 == l);
+  l1.pt_list();
+  l.pt_list();
 }
 
 //test cases for the reverse() methods of the list
@@ -177,6 +190,7 @@ TEST_CASE("testing of free method reverse()","[free_reverse]") {
   REQUIRE(l.comp_list(l1,true) == false);
   l.pt_list();
   l.push_front(21);
+  l.pt_list();
   auto l2 = reverse(l);
   REQUIRE(l.comp_list(l1,true) == false);
   l.pt_list();
@@ -245,6 +259,21 @@ TEST_CASE("testing  == and !=","[equals_operators]") {
   l.pop();
   REQUIRE(l == l2);
 }
+
+//test cases for the move constructor, till REQ(4==l2.sz) copied from the assignment
+TEST_CASE ("move constructor","[constructor]"){
+  List<int> list ;
+  list.push_front (1);
+  list.push_front (2);
+  list.push_front (3);
+  list.push_front (4);
+  List<int> list2 = std::move (list);
+  REQUIRE (0 == list.size ());
+  REQUIRE ( list.empty ());
+  REQUIRE (4 == list2.size ());
+  //TODO moar tests
+}
+
 
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"
