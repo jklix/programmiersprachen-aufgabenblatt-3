@@ -135,10 +135,10 @@ class List {
     After that the pointer is set to the next node in the original list
     */
     List(List const& list): size_{0}, first_{nullptr}, last_{nullptr} {
-       auto runner = list.first_;
+       auto rnr = list.first_;
       while(size_ < list.size_) {
-        push_back(runner->value);
-        runner = runner->next;
+        push_back(rnr->value);
+        rnr = rnr->next;
       }
 
     }
@@ -153,12 +153,21 @@ class List {
       //not implemented yet
     }
 
-    /* ... */
-    // test and implement:
-    //TODO: (unifying) Assignment operator (Aufgabe 3.6)
+    /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides  */
+    List& operator=(List const& rhs) {
+      auto n(rhs);
+      swap(n);
+      n.clear();
+      return *this;
+    }
+
+    /* related to 3.6: Small helper function to swap the fist and last pointers of two lists */
+    void swap(List& l) {
+      std::swap(first_, l.first_);
+      std::swap(last_, l.last_);
+    }
 
     /* checks if two lists are equal (in element count and -position) or not using comp_list() and returns a bool based on that */
-
     bool operator==(List const& rhs) const
     {
       return comp_list(rhs);
@@ -207,7 +216,7 @@ class List {
     reversing the order of element-values in the list by flipping the pointers of the nodes
     if the list size is smaller than 2 we don't have to do anything
     in every other case we have a runner node, starting at "first_" and working its way trough the list, flipping "prev" and "next" pointer using tmp as storage
-    when finished it then flips the first and last pointers of the list using swapfl()
+    when finished it then flips the first and last pointers of the list
     */
     void reverse() {
       if (size_ < 2) return;
@@ -219,16 +228,8 @@ class List {
         rnr->prev = tmp;
         rnr = rnr->prev;
       }
-      swapfl();
-    }
+      if (first_->next == nullptr) std::swap(first_, last_);
 
-    /* small helper function for switching the first and last pointers */
-    void swapfl() {
-      if (first_->next == nullptr) {
-        auto tmp = first_;
-        first_ = last_;
-        last_ = tmp;
-      }
     }
 
     /*
