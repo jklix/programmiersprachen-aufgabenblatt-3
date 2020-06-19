@@ -360,34 +360,16 @@ class List {
       if (size_ != l.size_) return false;
       //the condition below could be commented out since the method would handle it correctly anyway, however it is more efficient to do it like this
       if (size_ == 0) return true;
-      if (reverse) {
-        auto rnr_l1 = first_;
-        auto rnr_l2 = l.last_;
-        while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
+      auto rnr_l1 = first_;
+      auto rnr_l2 = (reverse ? l.last_ : l.first_);
+      while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
           if (rnr_l1->value != rnr_l2->value) return false;
           rnr_l1 = rnr_l1->next;
-          rnr_l2 = rnr_l2->prev;
-        }
-        if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
-        return false;
+          rnr_l2 = (reverse ? rnr_l2->prev : rnr_l2->next);
       }
-      else {
-        auto rnr_l1 = first_;
-        auto rnr_l2 = l.first_;
-        while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
-          if (rnr_l1->value != rnr_l2->value) return false;
-          rnr_l1 = rnr_l1->next;
-          rnr_l2 = rnr_l2->next;
-        }
-        if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
-        return false;
-      }
+      if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
+      return false;
     };
-
-    /*
-    related to 3.7
-    small helper function that prints the values of the elements of the list front to back, also printing the pointers of the objects to help debugging
-    */
     void pt_list() {
       auto rnr = first_;
       std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "->\n";
