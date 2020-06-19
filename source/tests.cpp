@@ -86,6 +86,25 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
   REQUIRE(l.comp_list(l1));
 }
 
+TEST_CASE("basic testing of reverse()","[reverse]") {
+  List<int> l{};
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+  l.push_front(32);
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+  l.push_front(21);
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+  l.push_front(91);
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+}
+
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"
 #include "sub_tests/end.test"

@@ -366,11 +366,12 @@ class List {
     small helper function that prints the values of the elements of the list front to back
     */
     void pt_list() {
-      ListNode<T> rnr = new ListNode<T>;
+      ListNode<T>* rnr = new ListNode<T>;
       rnr = first_;
       std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: ";
       while (rnr != nullptr) {
-        std::cout << "[ " << rnr->value << " ], ";
+        std::cout << "[ " << rnr->value << " ] ";
+        rnr = rnr->next;
       }
       std::cout << "\n";
     }
