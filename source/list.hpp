@@ -190,18 +190,17 @@ class List {
       clear();
     }
 
-    /* ... */
+    /* List Iterator, pointing to the first element in the list */
     ListIterator<T> begin() {
-      //TODO: begin-Method returning an Iterator to the 
-      //      first element in the List (Aufgabe 3.11)
-      return {};
+      ListIterator<T> b{};
+      b.node = (first_);
+      return b;
     }
 
-    /* ... */
+    /* List Iterator pointing to the element behind the last element of the List */
     ListIterator<T> end() {
-      //TODO: end-Method returning an Iterator to element after (!) 
-      //      the last element in the List (Aufgabe 3.11)
-      return {};
+      ListIterator<T> e{};
+      return e;
     }
 
     /* calls pop_front() as long as the size isn't 0 */ 

@@ -56,21 +56,21 @@ TEST_CASE("testing clear()","[clear]") {
 //test cases for the deep-copy method of the list
 TEST_CASE("basic testing of copy()", "[copy]") {
   List<int> l{};
-  List<int> l1(l);
+  List<int> l1{l};
   REQUIRE(l1.empty());
   l.push_front(4);
-  List<int>l2(l);
+  List<int>l2{l};
   REQUIRE(l2.empty() != true);
   l2.pop();
   REQUIRE(l2.empty());
   l.push_back(21);
   l.push_front(10);
-  List<int> l3(l);
+  List<int> l3{l};
   REQUIRE(l3.size() == l.size());
 }
 TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
   List<int> l{};
-  List<int> l1(l);
+  List<int> l1{l};
   REQUIRE(l.comp_list(l1));
   l.push_front(1);
   REQUIRE(l.comp_list(l1) == false);
@@ -132,7 +132,7 @@ TEST_CASE("testing the unifying operator","[unify_operator]") {
 TEST_CASE("testing of reverse()","[member_reverse]") {
   List<int> l{};
   l.pt_list();
-  auto l1(l);
+  auto l1{l};
   l.reverse();
   REQUIRE(l.comp_list(l1,true));
   l.pt_list();
@@ -142,21 +142,21 @@ TEST_CASE("testing of reverse()","[member_reverse]") {
   l.reverse();
   l.pt_list();
   l.push_front(21);
-  auto l2(l);
+  auto l2{l};
   REQUIRE(l.comp_list(l2,true) == false);
   l.pt_list();
   l.reverse();
   REQUIRE(l.comp_list(l2,true));
   l.pt_list();
   l.push_back(91);
-  auto l3(l);
+  auto l3{l};
   REQUIRE(l.comp_list(l3,true) == false);
   l.pt_list();
   l.reverse();
   REQUIRE(l.comp_list(l3,true));
   l.pt_list();
   l.pop_front();
-  auto l4(l);
+  auto l4{l};
   REQUIRE(l.comp_list(l4,true) == false);
   l.pt_list();
   l.reverse();
@@ -172,7 +172,7 @@ TEST_CASE("testing of reverse()","[member_reverse]") {
   l.pt_list();
   l.pop_back();
   l.pop_front();
-  auto l6(l);
+  auto l6{l};
   REQUIRE(l.comp_list(l6,true) == false);
   l.pt_list();
   l.reverse();
@@ -223,7 +223,7 @@ TEST_CASE("testing of free method reverse()","[free_reverse]") {
 //test cases for == and =! operators
 TEST_CASE("testing  == and !=","[equals_operators]") {
   List<int> l{};
-  auto l1(l);
+  auto l1{l};
   REQUIRE(l == l1);
   REQUIRE((l != l1) == false);
   l.push_front(1);
@@ -268,9 +268,9 @@ TEST_CASE ("move constructor","[constructor]"){
   list.push_front (3);
   list.push_front (4);
   List<int> list2 = std::move (list);
-  REQUIRE (0 == list.size ());
-  REQUIRE ( list.empty ());
-  REQUIRE (4 == list2.size ());
+  REQUIRE (0 == list.size());
+  REQUIRE (list.empty());
+  REQUIRE (4 == list2.size());
   //TODO moar tests
 }
 
