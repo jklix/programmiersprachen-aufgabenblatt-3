@@ -207,7 +207,21 @@ class List {
     /* ... */
 
     //TODO: member function reverse (Aufgabe 3.7 - Teil 1)
-
+    void reverse() {
+      if (size_ < 2) return;
+      ListNode<T>* tmp = new ListNode<T>;
+      ListNode<T>* rnr = new ListNode<T>;
+      rnr = first_;
+      for (int i=0; i < size_; i++) {
+        tmp = rnr->next;
+        rnr->next = rnr->prev;
+        rnr->prev = tmp;
+        rnr = rnr->prev;
+      }
+      first_ = tmp;
+      first_ = last_;
+      last_ = tmp;
+    }
     /*
     small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
     prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1
@@ -326,6 +340,7 @@ class List {
     };
 
     /* 
+    related to 3.5 copy()
     compares two lists and checks if they share the same element-values at the same postition 
     if the element values of the lists are identical, it returns true.
     */
