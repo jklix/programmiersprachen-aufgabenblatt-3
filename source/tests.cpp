@@ -89,11 +89,11 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
 TEST_CASE("basic testing of reverse()","[reverse]") {
   List<int> l{};
   l.pt_list();
-  //l.reverse();
+  l.reverse();
   l.pt_list();
   l.push_front(32);
   l.pt_list();
-  //l.reverse();
+  l.reverse();
   l.pt_list();
   l.push_front(21);
   l.pt_list();
@@ -103,6 +103,53 @@ TEST_CASE("basic testing of reverse()","[reverse]") {
   l.pt_list();
   l.reverse();
   l.pt_list();
+  l.pop_front();
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+  l.push_back(4);
+  l.push_back(7);
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+  l.pop_back();
+  l.pop_front();
+  l.pt_list();
+  l.reverse();
+  l.pt_list();
+}
+
+TEST_CASE("basic testing of free method reverse()","[reverse]") {
+  List<int> l{};
+  l.pt_list();
+  auto l1 = reverse(l);
+  l1.pt_list();
+  l.push_front(32);
+  l.pt_list();
+  auto l2 = reverse(l);
+  l2.pt_list();
+  l.push_front(21);
+  l.pt_list();
+  auto l3 = reverse(l);
+  l3.pt_list();
+  l.push_back(91);
+  l.pt_list();
+  auto l4 = reverse(l);
+  l4.pt_list();
+  l.pop_front();
+  l.pt_list();
+  auto l5 =reverse(l);
+  l5.pt_list();
+  l.push_back(4);
+  l.push_back(7);
+  l.pt_list();
+  auto l6 = reverse(l);
+  l6.pt_list();
+  l.pop_back();
+  l.pop_front();
+  l.pt_list();
+  auto l7 = reverse(l);
+  l7.pt_list();
 }
 
 //test cases for retrieving iterators

@@ -391,12 +391,13 @@ class List {
 };
 
 /* 
-reverse() first creates a new List, deep-copying "l" , then it calls the member function reverse() on the newly created list and returns it.
+reverse() first creates a new List, deep-copying "l", then calls the member function reverse() on the newly created list and returns it.
  */
 template<typename T>
 List<T> reverse(List<T>& l) {
-  List<T> revl(l);
-  return (revl.reverse());
+  auto revl(l);
+  revl.reverse();
+  return (revl);
 }
 /* ... */
 //TODO: Freie Funktion operator+ (3.10 - Teil 2)
