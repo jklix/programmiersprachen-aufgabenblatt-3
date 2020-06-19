@@ -84,6 +84,36 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
   l1.push_front(1);
   REQUIRE(l.comp_list(l1));
 }
+//test cases for the = operator
+TEST_CASE("testing the unifying operator","[unify_operator]") {
+  List<int> l{};
+  List<int> l1{};
+  l1.push_back(3);
+  l.push_front(4);
+  auto ltest(l1);
+  REQUIRE(l1 != l);
+  REQUIRE(l1 == ltest);
+  l1 = l;
+  REQUIRE(l1 == l);
+  REQUIRE(l1 != ltest);
+  l1.pop();
+  REQUIRE(l1 != l);
+  REQUIRE(l.size() == 1);
+  l = l1;
+  REQUIRE(l1 == l);
+  REQUIRE(l.size() == 0);
+  l.push_back(29);
+  l.push_front(31);
+  l.push_back(55);
+  l.push_front(34);
+  REQUIRE(l1 != l);
+  l1 = l;
+  REQUIRE(l1 == l);
+  l1.pop_back();
+  REQUIRE(l1 != l);
+  l.pop_back();
+  REQUIRE(l1 == l);
+}
 
 //test cases for the reverse() methods of the list
 TEST_CASE("testing of reverse()","[member_reverse]") {
