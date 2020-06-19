@@ -231,6 +231,7 @@ class List {
         last_ = tmp;
       }
     }
+
     /*
     small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
     prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1
@@ -352,20 +353,35 @@ class List {
     related to 3.5 copy()
     compares two lists and checks if they share the same element-values at the same postition 
     if the element values of the lists are identical, it returns true.
+    related to 3.7 reverse()
+    if the boolean is set to true it will test if the two lists are equal when one is reversed
     */
-    bool comp_list(List const& l) {
+    bool comp_list(List const& l, bool reverse = false) {
       if (size_ != l.size_) return false;
       //the condition below could be commented out since the method would handle it correctly anyway, however it is more efficient to do it like this
       if (size_ == 0) return true;
-      auto rnr_l1 = first_;
-      auto rnr_l2 = l.first_;
-      while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
-        if (rnr_l1->value != rnr_l2->value) return false;
-        rnr_l1 = rnr_l1->next;
-        rnr_l2 = rnr_l2->next;
+      if (reverse) {
+        auto rnr_l1 = first_;
+        auto rnr_l2 = l.last_;
+        while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
+          if (rnr_l1->value != rnr_l2->value) return false;
+          rnr_l1 = rnr_l1->next;
+          rnr_l2 = rnr_l2->prev;
+        }
+        if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
+        return false;
       }
-      if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
-      return false;
+      else {
+        auto rnr_l1 = first_;
+        auto rnr_l2 = l.first_;
+        while ((rnr_l1 != nullptr) && (rnr_l2 != nullptr)){
+          if (rnr_l1->value != rnr_l2->value) return false;
+          rnr_l1 = rnr_l1->next;
+          rnr_l2 = rnr_l2->next;
+        }
+        if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
+        return false;
+      }
     };
 
     /*

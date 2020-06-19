@@ -86,70 +86,94 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
   REQUIRE(l.comp_list(l1));
 }
 
-TEST_CASE("basic testing of reverse()","[reverse]") {
+TEST_CASE("testing of reverse()","[reverse]") {
   List<int> l{};
   l.pt_list();
+  auto l1(l);
   l.reverse();
+  REQUIRE(l.comp_list(l1,true));
   l.pt_list();
   l.push_front(32);
+  REQUIRE(l.comp_list(l1,true) == false);
   l.pt_list();
   l.reverse();
   l.pt_list();
   l.push_front(21);
+  auto l2(l);
+  REQUIRE(l.comp_list(l2,true) == false);
   l.pt_list();
   l.reverse();
+  REQUIRE(l.comp_list(l2,true));
   l.pt_list();
   l.push_back(91);
+  auto l3(l);
+  REQUIRE(l.comp_list(l3,true) == false);
   l.pt_list();
   l.reverse();
+  REQUIRE(l.comp_list(l3,true));
   l.pt_list();
   l.pop_front();
+  auto l4(l);
+  REQUIRE(l.comp_list(l4,true) == false);
   l.pt_list();
   l.reverse();
+  REQUIRE(l.comp_list(l4,true));
   l.pt_list();
   l.push_back(4);
   l.push_back(7);
+  auto l5(l);
+  REQUIRE(l.comp_list(l5,true) == false);
   l.pt_list();
   l.reverse();
+  REQUIRE(l.comp_list(l5,true));
   l.pt_list();
   l.pop_back();
   l.pop_front();
+  auto l6(l);
+  REQUIRE(l.comp_list(l6,true) == false);
   l.pt_list();
   l.reverse();
+  REQUIRE(l.comp_list(l6,true));
   l.pt_list();
 }
 
-TEST_CASE("basic testing of free method reverse()","[reverse]") {
+TEST_CASE("testing of free method reverse()","[reverse]") {
   List<int> l{};
   l.pt_list();
   auto l1 = reverse(l);
+  REQUIRE(l.comp_list(l1,true));
   l1.pt_list();
   l.push_front(32);
+  REQUIRE(l.comp_list(l1,true) == false);
   l.pt_list();
-  auto l2 = reverse(l);
-  l2.pt_list();
   l.push_front(21);
+  auto l2 = reverse(l);
+  REQUIRE(l.comp_list(l1,true) == false);
   l.pt_list();
-  auto l3 = reverse(l);
-  l3.pt_list();
+  REQUIRE(l.comp_list(l2,true));
   l.push_back(91);
+  auto l3 = reverse(l);
+  REQUIRE(l.comp_list(l3,true));
+  l3.pt_list();
   l.pt_list();
-  auto l4 = reverse(l);
-  l4.pt_list();
   l.pop_front();
+  auto l4 = reverse(l);
+  REQUIRE(l.comp_list(l4,true));
   l.pt_list();
-  auto l5 =reverse(l);
-  l5.pt_list();
+  l4.pt_list();
   l.push_back(4);
   l.push_back(7);
+  auto l5 = reverse(l);
+  REQUIRE(l.comp_list(l5,true));
   l.pt_list();
-  auto l6 = reverse(l);
-  l6.pt_list();
+  l5.pt_list();
   l.pop_back();
   l.pop_front();
+  auto l6 = reverse(l);
+  REQUIRE(l.comp_list(l6,true));
   l.pt_list();
-  auto l7 = reverse(l);
-  l7.pt_list();
+  REQUIRE(l.comp_list(l6,true));
+  l6.pt_list();
 }
 
 //test cases for retrieving iterators
