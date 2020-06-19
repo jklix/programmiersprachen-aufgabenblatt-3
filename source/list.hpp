@@ -208,8 +208,8 @@ class List {
     reversing the order of element-values in the list by flipping the pointers of the nodes
     if the list size is smaller than 2 we don't have to do anything
     in every other case we have a runner node, starting at "first_" and working its way trough the list, flipping "prev" and "next" pointer using tmp as storage
-
-     */
+    when finished it then flips the first and last pointers of the list using swapfl()
+    */
     void reverse() {
       if (size_ < 2) return;
       ListNode<T>* tmp = new ListNode<T>;
@@ -223,9 +223,7 @@ class List {
       swapfl();
     }
 
-    /*
-
-    */
+    /* small helper function for switching the first and last pointers */
     void swapfl() {
       if (first_->next == nullptr) {
         auto tmp = first_;
@@ -372,16 +370,16 @@ class List {
 
     /*
     related to 3.7
-    small helper function that prints the values of the elements of the list front to back
+    small helper function that prints the values of the elements of the list front to back, also printing the pointers of the objects to help debugging
     */
     void pt_list() {
       auto rnr = first_;
-      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "\n";
+      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "->\n";
       while (rnr != nullptr) {
-        std::cout << rnr->prev << "[ " << rnr->value << " ] " << rnr->next << " ";
+        std::cout << "<- " << rnr->prev << "[ " << rnr->value << " ] " << rnr->next << " -> ";
         rnr = rnr->next;
       }
-      std::cout << "\n" << last_ <<"\n";
+      std::cout << "\n<-" << last_ <<"\n";
     }
 
 
