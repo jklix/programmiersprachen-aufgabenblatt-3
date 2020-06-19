@@ -54,7 +54,7 @@ TEST_CASE("testing clear()","[clear]") {
 #include "sub_tests/back.test"
 
 //test cases for the deep-copy method of the list
-TEST_CASE("testing copy()", "[copy]") {
+TEST_CASE("basic testing of copy()", "[copy]") {
   List<int> l{};
   List<int> l1(l);
   REQUIRE(l1.empty());
@@ -63,7 +63,6 @@ TEST_CASE("testing copy()", "[copy]") {
   REQUIRE(l2.empty() != true);
   l2.pop();
   REQUIRE(l2.empty());
-  //I can't compare values since first_ and last_ are private, so only the size is comparable
   l.push_back(21);
   l.push_front(10);
   List<int> l3(l);
@@ -86,7 +85,8 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
   REQUIRE(l.comp_list(l1));
 }
 
-TEST_CASE("testing of reverse()","[reverse]") {
+//test cases for the reverse() methods of the list
+TEST_CASE("testing of reverse()","[member_reverse]") {
   List<int> l{};
   l.pt_list();
   auto l1(l);
@@ -137,7 +137,7 @@ TEST_CASE("testing of reverse()","[reverse]") {
   l.pt_list();
 }
 
-TEST_CASE("testing of free method reverse()","[reverse]") {
+TEST_CASE("testing of free method reverse()","[free_reverse]") {
   List<int> l{};
   l.pt_list();
   auto l1 = reverse(l);
@@ -174,6 +174,46 @@ TEST_CASE("testing of free method reverse()","[reverse]") {
   l.pt_list();
   REQUIRE(l.comp_list(l6,true));
   l6.pt_list();
+}
+
+//test cases for == and =! operators
+TEST_CASE("testing  == and !=","[equals_operators]") {
+  List<int> l{};
+  auto l1(l);
+  REQUIRE(l == l1);
+  REQUIRE((l != l1) == false);
+  l.push_front(1);
+  REQUIRE(l != l1);
+  REQUIRE((l == l1) == false);
+  auto l2(l);
+  REQUIRE(l == l2);
+  REQUIRE((l != l2) == false);
+  l1.push_back(1);
+  REQUIRE(l == l1);
+  REQUIRE((l != l1) == false);
+  REQUIRE(l1 == l2);
+  REQUIRE((l1 != l2) == false);
+  l1.push_back(1);
+  l2.push_front(1);
+  REQUIRE(l1 == l2);
+  l2.push_front(3);
+  l1.push_back(3);
+  REQUIRE(l2 != l1);
+  l2.push_front(43);
+  l2.push_front(16);
+  l2.push_front(63);
+  auto l4(l2);
+  REQUIRE(l4 == l2);
+  l4.pop_back();
+  REQUIRE(l4 != l2);
+  REQUIRE(l != l4);
+  l2.pop_back();
+  REQUIRE(l4 == l2);
+  l2.clear();
+  REQUIRE(l4 != l2);
+  REQUIRE(l != l2);
+  l.pop();
+  REQUIRE(l == l2);
 }
 
 //test cases for retrieving iterators

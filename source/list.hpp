@@ -157,18 +157,17 @@ class List {
     // test and implement:
     //TODO: (unifying) Assignment operator (Aufgabe 3.6)
 
-    /* ... */
-    // test and implement:
+    /* checks if two lists are equal (in element count and -position) or not using comp_list() and returns a bool based on that */
 
     bool operator==(List const& rhs) const
     {
-      //TODO: operator== (Aufgabe 3.8)
+      return comp_list(rhs);
     }
 
     bool operator!=(List const& rhs) const
     {
-      //TODO: operator!= (Aufgabe 3.8)
-      // make use of operator==
+      return (*this == rhs ? false : true);
+      //return (comp_list(rhs) ? false : true);
     }
 
     /* calls clear() to destroy the list */
@@ -356,7 +355,7 @@ class List {
     related to 3.7 reverse()
     if the boolean is set to true it will test if the two lists are equal when one is reversed
     */
-    bool comp_list(List const& l, bool reverse = false) {
+    bool comp_list(List const& l, bool reverse = false) const {
       if (size_ != l.size_) return false;
       //the condition below could be commented out since the method would handle it correctly anyway, however it is more efficient to do it like this
       if (size_ == 0) return true;
