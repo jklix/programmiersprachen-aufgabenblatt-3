@@ -261,19 +261,43 @@ TEST_CASE("testing  == and !=","[equals_operators]") {
 }
 
 //test cases for the move constructor, till REQ(4==l2.sz) copied from the assignment
-TEST_CASE ("move constructor","[constructor]"){
+TEST_CASE ("testing the move constructor","[constructor]") {
   List<int> list ;
-  list.push_front (1);
-  list.push_front (2);
-  list.push_front (3);
-  list.push_front (4);
-  List<int> list2 = std::move (list);
+  list.push_front(1);
+  list.push_front(2);
+  list.push_front(3);
+  list.push_front(4);
+  List<int> list2 = std::move(list);
   REQUIRE (0 == list.size());
   REQUIRE (list.empty());
   REQUIRE (4 == list2.size());
-  //TODO moar tests
+  list2.push_back(0);
+  list2.push_back(-1);
+  auto l2tmp(list2);
+  list.pt_list();
+  list = std::move(list2);
+  list.pt_list();
+  list2.pt_list();
+  REQUIRE (0 == list2.size());
+  REQUIRE (list2.empty());
+  REQUIRE (4 == list.size());
+  REQUIRE (l2tmp != list2);
+  REQUIRE (l2tmp == list);
 }
 
+//test cases for the initializer list
+TEST_CASE("testing the initialiazer list","[init_list]") {
+  List<int> int_list{9, 5, 38, 100};
+  int_list.pt_list();
+  List<int> l1{};
+  l1.pt_list();
+  List<int> l2{1};
+  l2.pt_list();
+  List<int> l3{1, 45, -12, 51, 39, 37, 0};
+  l3.pt_list();
+  List<int> l4{0};
+  l4.pt_list();
+}
 
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"

@@ -142,20 +142,18 @@ class List {
       }
 
     }
-    /* Implementation of move constructor, based on the provided slides  */
-    List(List&& rhs) {
-      first_ = rhs.first_;
-      last_ = rhs.last_;
-      size_ = rhs.size_;
-      rhs.first_ = rhs.last_ = nullptr;
+    /* We build copy the member-vars directly into the list and then set the values of the list we copied it from to 0 / nullptr to get a empty list */
+    List(List&& rhs) : size_{rhs.size_}, first_{rhs.first_}, last_{rhs.last_} {
       rhs.size_ = 0;
+      rhs.first_ = rhs.last_ = nullptr;
     }
-
-    //TODO: Initializer-List Konstruktor (3.10 - Teil 1)
-    /* ... */
-    // test and implement:
+    /* Implementation of the initializer list, based on the requirements in 3.10 */
     List(std::initializer_list<T> ini_list) {
-      //not implemented yet
+      size_ = 0;
+      first_ = last_ = nullptr;
+      for (auto& i : ini_list) {
+        push_back(i);
+      }
     }
 
     /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides */
@@ -192,15 +190,12 @@ class List {
 
     /* List Iterator, pointing to the first element in the list */
     ListIterator<T> begin() {
-      ListIterator<T> b{};
-      b.node = (first_);
-      return b;
+      return {first_};
     }
 
     /* List Iterator pointing to the element behind the last element of the List */
     ListIterator<T> end() {
-      ListIterator<T> e{};
-      return e;
+      return {nullptr};
     }
 
     /* calls pop_front() as long as the size isn't 0 */ 
