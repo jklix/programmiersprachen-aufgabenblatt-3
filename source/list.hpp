@@ -30,25 +30,24 @@ struct ListIterator {
   using iterator_category = std::bidirectional_iterator_tag;
 
 
-  /* DESCRIPTION  operator*() */
+  /* DESCRIPTION  operator*() returns the value which the node of the LiIt points to */
   T& operator*()  const {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
     }
-
-    //TODO: remaining implementation of derefenciation of 
-    //      iterator using operator* (Aufgabe 3.12 - Teil 1)
-
+    else {
+      return node->value;
+    }
   } //call *it
 
-  /* DESCRIPTION  operator->() */
+  /* DESCRIPTION  operator->() returns a pointer to the value which the node of the LiIt is pointing to */
   T* operator->() const {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
     }
-
-    //TODO: remaining implementation of derefenciation of 
-    //      iterator using operator-> (Aufgabe 3.12 - Teil 2)
+    else {
+      return &node->value;
+    }
   }  //call it->method() or it->member
 
 
@@ -57,10 +56,8 @@ struct ListIterator {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
     }
-
-    //TODO: Implement Postincrement-Operation for Iterator
-    //      (Aufgabe 3.12 - Teil 3)
-    
+    node = node->next;
+    return *this;
   }
 
   /* POSTINCREMENT (signature distinguishes the iterators), 
@@ -69,27 +66,26 @@ struct ListIterator {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
     }
-
-    //TODO: Implement Postincrement-Operation for Iterator
-    //      (Aufgabe 3.12 - Teil 4)
-
+    if(node->next == nullptr) {
+      ListIterator<T> tmp{};
+      std::swap(*this, tmp);
+      return tmp;
+    }
+    else {
+      node = node->next;
+      return {node->prev};
+    }
   }
 
 
-  /* ... */
+  /* checks if the pointers of the nodes of the two ListIterators are the same */
   bool operator==(ListIterator<T> const& x) const {
-    //TODO: Implement Equality-Operation for Iterator
-    //      (Aufgabe 3.12 - Teil 5)
-    // Iterators should be the same if they refer to the same node
-    return false;
+    return(node == x.node) ? true : false;
   } // call it: == it
 
-  /* ... */
+  /* compares two ListIterators by using the previously implemented == operator */
   bool operator!=(ListIterator<T> const& x) const {
-    //TODO: Implement Inequality-Operation for Iterator  
-    //      (Aufgabe 3.12 - Teil 6)
-    // Reuse operator==
-    return false;
+    return(*this == x) ? false : true;
   } // call it: != it
 
   /* Advances Iterator */
@@ -142,7 +138,10 @@ class List {
       }
 
     }
-    /* We build copy the member-vars directly into the list and then set the values of the list we copied it from to 0 / nullptr to get a empty list */
+    /* 
+    move operator:
+    We build copy the member-vars directly into a new list, then set the values of the list we copied it from to 0 / nullptr to get a empty list 
+    */
     List(List&& rhs) : size_{rhs.size_}, first_{rhs.first_}, last_{rhs.last_} {
       rhs.size_ = 0;
       rhs.first_ = rhs.last_ = nullptr;
@@ -158,9 +157,9 @@ class List {
 
     /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides */
     List& operator=(List const& rhs) {
-      auto n(rhs);
-      swap(n);
-      n.clear();
+      auto tmp(rhs);
+      swap(tmp);
+      tmp.clear();
       return *this;
     }
 
@@ -397,8 +396,13 @@ List<T> reverse(List<T> const& l) {
   revl.reverse();
   return revl;
 }
-/* ... */
-//TODO: Freie Funktion operator+ (3.10 - Teil 2)
-
+/* currently not working at all yay */
+template<typename T>
+List<T> operator+(List<T> const& lhs, List<T> const& rhs) {
+  auto tmp1(lhs);
+  auto tmp2(rhs);
+  for (auto const& i : tmp2) tmp1.push_back(i);
+  return tmp1;
+}
 
 #endif // # define BUW_LIST_HPP

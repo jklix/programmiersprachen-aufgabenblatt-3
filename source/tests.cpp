@@ -299,6 +299,15 @@ TEST_CASE("testing the initialiazer list","[init_list]") {
   l4.pt_list();
 }
 
+//test case for +operator
+TEST_CASE("testing + for lists","op_plus") {
+  List<int> l1{1, 2, 3, 4};
+  List<int> l2{5, 6, 7, 8};
+  auto test = l1 + l2;
+  auto test2 = List<int>{1, 2, 3, 4, 5} + List<int>{6, 5, 8, 9};
+  test.pt_list();
+}
+
 //test cases for retrieving iterators
 #include "sub_tests/begin.test"
 #include "sub_tests/end.test"
