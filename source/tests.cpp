@@ -265,7 +265,7 @@ TEST_CASE("testing  == and !=","[equals_operators]") {
 
 //test cases for the move constructor, till REQ(4==l2.sz) copied from the assignment
 TEST_CASE ("testing the move constructor","[constructor]") {
-  bool print = true;
+  bool print = false;
   List<int> list ;
   list.push_front(1);
   list.push_front(2);
@@ -278,15 +278,22 @@ TEST_CASE ("testing the move constructor","[constructor]") {
   list2.push_back(0);
   list2.push_back(-1);
   auto l2tmp(list2);
+  list.push_front(5);
   list.pt_list(print);
+  list2.pt_list(print);
   list = std::move(list2);
   list.pt_list(print);
   list2.pt_list(print);
   REQUIRE (0 == list2.size());
   REQUIRE (list2.empty());
-  REQUIRE (4 == list.size());
+  REQUIRE (6 == list.size());
   REQUIRE (l2tmp != list2);
   REQUIRE (l2tmp == list);
+  list = std::move(list2);
+  REQUIRE (list2.empty());
+  REQUIRE (list.empty());
+  list2.pt_list(print);
+  list.pt_list(print);
 }
 
 //test cases for the initializer list

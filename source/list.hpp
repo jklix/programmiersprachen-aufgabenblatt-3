@@ -146,6 +146,7 @@ class List {
       rhs.size_ = 0;
       rhs.first_ = rhs.last_ = nullptr;
     }
+
     /* Implementation of the initializer list, based on the requirements in 3.10 */
     List(std::initializer_list<T> ini_list) : size_{0}, first_{nullptr}, last_{nullptr} {
       for (auto& i : ini_list) {
@@ -154,10 +155,8 @@ class List {
     }
 
     /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides */
-    List& operator=(List const& rhs) {
-      auto tmp(rhs);
-      swap(tmp);
-      tmp.clear();
+    List& operator=(List rhs) {
+      swap(rhs);
       return *this;
     }
 
