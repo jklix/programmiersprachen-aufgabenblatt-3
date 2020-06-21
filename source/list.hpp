@@ -202,8 +202,41 @@ class List {
     }
 
 
-    /* ... */
-    //TODO: member function insert (Aufgabe 3.13)
+    /*
+    insert creates a new ListNode n with the value val and a ListIterator bh (behind) using bf.next()
+    then we check where the element is added: 
+
+    an element can be added between two elements, then we need to set their next / prev pointers to our new node and also its next and prev pointer to those nodes respectively
+
+    an element can be added to a empty list, then we just need to set the first_ and last_ - pointers to our new element (using push())
+
+    an element can be added at the front of a list, then we need to change first_ and set it to our element after we set the prev pointer of the former first node to the new Node
+    and the next pointer of the new node to the former first. (using push_front())
+
+    an element can be added at the very back of a list, then we'd need to change the  last_ pointer to the new node and set the next pointer from the previous last node to our new last node
+    and its prev pointer to the former last node (using push_back())
+
+    after that has happened we increase the list size by one. Since all the push methods do that anyway (as well as uppdating the first_ and last_ pointers) 
+    we only have to do that for our first if-case
+    */
+    ListIterator<T> insert(T const& val, ListIterator<T> bf) {
+      if ((bf.node != nullptr) && (bf.node->next != nullptr)) {
+        ListIterator<T> bh{bf.next()};
+        ListNode<T>n{val, bf.node, bh.node};
+        bf.node->next = n;
+        bh.node->prev = n;
+        size_++;
+        return{n};
+      }
+      if (bf.node == nullptr) {
+        push_front(val);
+        return(first_);
+      }
+      if ((bf.node != nullptr) && (bf.node->next == nullptr)) {
+        push_back(val);
+        return(last_);
+      }
+    }
 
     /* ... */
     //TODO: member function insert (Aufgabe 3.14)
