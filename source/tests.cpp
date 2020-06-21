@@ -358,6 +358,21 @@ TEST_CASE("testing + for lists","op_plus") {
 #include "sub_tests/iterators/operator_does_not_equal.test"
 #include "sub_tests/iterators/operator_iterate_forward.test"
 
+//insert tests
+TEST_CASE("testing insert()","[insert]") {
+  List<int> l{};
+  REQUIRE(l.empty());
+  ListIterator<int> it1 = l.insert(5, l.begin());
+  REQUIRE(it1.node->value == 5);
+  REQUIRE(l.size() == 1);
+  ListIterator<int> it2 = l.insert(6, it1);
+  REQUIRE(it2.node->value == 6);
+  REQUIRE(l.size() == 2);
+  ListIterator<int> it3 = l.insert(1, it1);
+  REQUIRE(it3.node->value == 1);
+  REQUIRE(l.size() == 3);
+}
+
 int main(int argc, char *argv[])
 {
   return Catch::Session().run(argc, argv);

@@ -220,26 +220,45 @@ class List {
     we only have to do that for our first if-case
     */
     ListIterator<T> insert(T const& val, ListIterator<T> bf) {
+      if (bf.node == nullptr) {
+        push_front(val);
+        return{first_};
+      }
       if ((bf.node != nullptr) && (bf.node->next != nullptr)) {
         ListIterator<T> bh{bf.next()};
-        ListNode<T>n{val, bf.node, bh.node};
+        ListNode<T>* n = new ListNode<T>{val, bf.node, bh.node};
         bf.node->next = n;
         bh.node->prev = n;
         size_++;
-        return{n};
+        bf = bf.next();
+        return bf;
       }
-      if (bf.node == nullptr) {
-        push_front(val);
-        return(first_);
-      }
-      if ((bf.node != nullptr) && (bf.node->next == nullptr)) {
+      else {
         push_back(val);
-        return(last_);
+        return{last_};
       }
     }
 
     /* ... */
-    //TODO: member function insert (Aufgabe 3.14)
+    ListIterator<T> erase(T const& val, ListIterator<T> bf) {
+      if (bf.node == nullptr) {
+        pop_front();
+        return{first_};
+      }
+      if ((bf.node != nullptr) && (bf.node->next != nullptr)) {
+        ListIterator<T> del{bf.next()};
+        ListIterator<T> bh{del.next()};
+        delete(del);
+        bf.node->next = bh.node;
+        bh.node->prev = bf.node;
+        size_--;
+        return bh;
+      }
+      else {
+        pop_back(val);
+        return{nullptr};
+      }
+    }
 
     /*
     reversing the order of element-values in the list by flipping the pointers of the nodes
