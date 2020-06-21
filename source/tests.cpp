@@ -86,6 +86,7 @@ TEST_CASE("testing copy() with a designated comparison method", "[comp_list]") {
 }
 //test cases for the = operator
 TEST_CASE("testing the unifying operator","[unify_operator]") {
+  bool print = false;
   List<int> l{};
   List<int> l1{};
   REQUIRE(l1 == l);
@@ -102,122 +103,124 @@ TEST_CASE("testing the unifying operator","[unify_operator]") {
   REQUIRE(l.size() == 1);
   REQUIRE(l1.size() == 0);
   l = l1;
-  l1.pt_list();
-  l.pt_list();
+  l1.pt_list(print);
+  l.pt_list(print);
   REQUIRE(l.size() == 0);
   REQUIRE(l1.size() == 0);
   REQUIRE(l == l1);
-  l1.pt_list();
-  l.pt_list();
+  l1.pt_list(print);
+  l.pt_list(print);
   l.push_back(29);
   l.push_front(31);
   l.push_back(55);
   l.push_front(34);
-  l1.pt_list();
-  l.pt_list();
+  l1.pt_list(print);
+  l.pt_list(print);
   REQUIRE(l1 != l);
   l1 = l;
-  l1.pt_list();
-  l.pt_list();
+  l1.pt_list(print);
+  l.pt_list(print);
   REQUIRE(l1 == l);
   l1.pop_back();
   REQUIRE(l1 != l);
   l.pop_back();
   REQUIRE(l1 == l);
-  l1.pt_list();
-  l.pt_list();
+  l1.pt_list(print);
+  l.pt_list(print);
 }
 
 //test cases for the reverse() methods of the list
 TEST_CASE("testing of reverse()","[member_reverse]") {
+  bool print = false;
   List<int> l{};
-  l.pt_list();
+  l.pt_list(print);
   auto l1{l};
   l.reverse();
   REQUIRE(l.comp_list(l1,true));
-  l.pt_list();
+  l.pt_list(print);
   l.push_front(32);
   REQUIRE(l.comp_list(l1,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
-  l.pt_list();
+  l.pt_list(print);
   l.push_front(21);
   auto l2{l};
   REQUIRE(l.comp_list(l2,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
   REQUIRE(l.comp_list(l2,true));
-  l.pt_list();
+  l.pt_list(print);
   l.push_back(91);
   auto l3{l};
   REQUIRE(l.comp_list(l3,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
   REQUIRE(l.comp_list(l3,true));
-  l.pt_list();
+  l.pt_list(print);
   l.pop_front();
   auto l4{l};
   REQUIRE(l.comp_list(l4,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
   REQUIRE(l.comp_list(l4,true));
-  l.pt_list();
+  l.pt_list(print);
   l.push_back(4);
   l.push_back(7);
   auto l5(l);
   REQUIRE(l.comp_list(l5,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
   REQUIRE(l.comp_list(l5,true));
-  l.pt_list();
+  l.pt_list(print);
   l.pop_back();
   l.pop_front();
   auto l6{l};
   REQUIRE(l.comp_list(l6,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.reverse();
   REQUIRE(l.comp_list(l6,true));
-  l.pt_list();
+  l.pt_list(print);
 }
 
 TEST_CASE("testing of free method reverse()","[free_reverse]") {
+  bool print = false;
   List<int> l{};
-  l.pt_list();
+  l.pt_list(print);
   auto l1 = reverse(l);
   REQUIRE(l.comp_list(l1,true));
-  l1.pt_list();
+  l1.pt_list(print);
   l.push_front(32);
   REQUIRE(l.comp_list(l1,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   l.push_front(21);
-  l.pt_list();
+  l.pt_list(print);
   auto l2 = reverse(l);
   REQUIRE(l.comp_list(l1,true) == false);
-  l.pt_list();
+  l.pt_list(print);
   REQUIRE(l.comp_list(l2,true));
   l.push_back(91);
   auto l3 = reverse(l);
   REQUIRE(l.comp_list(l3,true));
-  l3.pt_list();
-  l.pt_list();
+  l3.pt_list(print);
+  l.pt_list(print);
   l.pop_front();
   auto l4 = reverse(l);
   REQUIRE(l.comp_list(l4,true));
-  l.pt_list();
-  l4.pt_list();
+  l.pt_list(print);
+  l4.pt_list(print);
   l.push_back(4);
   l.push_back(7);
   auto l5 = reverse(l);
   REQUIRE(l.comp_list(l5,true));
-  l.pt_list();
-  l5.pt_list();
+  l.pt_list(print);
+  l5.pt_list(print);
   l.pop_back();
   l.pop_front();
   auto l6 = reverse(l);
   REQUIRE(l.comp_list(l6,true));
-  l.pt_list();
+  l.pt_list(print);
   REQUIRE(l.comp_list(l6,true));
-  l6.pt_list();
+  l6.pt_list(print);
 }
 
 //test cases for == and =! operators
@@ -262,6 +265,7 @@ TEST_CASE("testing  == and !=","[equals_operators]") {
 
 //test cases for the move constructor, till REQ(4==l2.sz) copied from the assignment
 TEST_CASE ("testing the move constructor","[constructor]") {
+  bool print = true;
   List<int> list ;
   list.push_front(1);
   list.push_front(2);
@@ -274,10 +278,10 @@ TEST_CASE ("testing the move constructor","[constructor]") {
   list2.push_back(0);
   list2.push_back(-1);
   auto l2tmp(list2);
-  list.pt_list();
+  list.pt_list(print);
   list = std::move(list2);
-  list.pt_list();
-  list2.pt_list();
+  list.pt_list(print);
+  list2.pt_list(print);
   REQUIRE (0 == list2.size());
   REQUIRE (list2.empty());
   REQUIRE (4 == list.size());
@@ -287,25 +291,53 @@ TEST_CASE ("testing the move constructor","[constructor]") {
 
 //test cases for the initializer list
 TEST_CASE("testing the initialiazer list","[init_list]") {
+  bool print = false;
   List<int> int_list{9, 5, 38, 100};
-  int_list.pt_list();
   List<int> l1{};
-  l1.pt_list();
   List<int> l2{1};
-  l2.pt_list();
   List<int> l3{1, 45, -12, 51, 39, 37, 0};
-  l3.pt_list();
   List<int> l4{0};
-  l4.pt_list();
+  REQUIRE(int_list.size() == 4);
+  REQUIRE(l1.size() == 0);
+  REQUIRE(l2.size() == 1);
+  REQUIRE(l3.size() == 7);
+  REQUIRE(l4.size() == 1);
+  int_list.pt_list(print);
+  l1.pt_list(print);
+  l2.pt_list(print);
+  l3.pt_list(print);
+  l4.pt_list(print);
 }
 
 //test case for +operator
 TEST_CASE("testing + for lists","op_plus") {
+  bool print = false;
   List<int> l1{1, 2, 3, 4};
   List<int> l2{5, 6, 7, 8};
-  auto test = l1 + l2;
+  List<int> l3{};
+  List<int> l4{};
+  List<int> l5{0};
+  auto test1 = l1 + l2;
   auto test2 = List<int>{1, 2, 3, 4, 5} + List<int>{6, 5, 8, 9};
-  test.pt_list();
+  auto test3 = l3 + l4;
+  auto test4 = l3 + l3 + l3;
+  auto test5 = l5 + l5 + l4;
+  auto test6 = l1 + l2 + l3 + l4 + l5;
+  auto test7 = l1 +l1;
+  test1.pt_list(print);
+  test2.pt_list(print);
+  test3.pt_list(print);
+  test4.pt_list(print);
+  test5.pt_list(print);
+  test6.pt_list(print);
+  test7.pt_list(print);
+  REQUIRE(test1.size() == 8);
+  REQUIRE(test2.size() == 9);
+  REQUIRE(test3.size() == 0);
+  REQUIRE(test4.size() == 0);
+  REQUIRE(test5.size() == 2);
+  REQUIRE(test6.size() == 9);
+  REQUIRE(test7.size() == 8);
 }
 
 //test cases for retrieving iterators

@@ -73,7 +73,7 @@ struct ListIterator {
     }
     else {
       node = node->next;
-      return {node->prev};
+      return{node->prev};
     }
   }
 
@@ -147,9 +147,7 @@ class List {
       rhs.first_ = rhs.last_ = nullptr;
     }
     /* Implementation of the initializer list, based on the requirements in 3.10 */
-    List(std::initializer_list<T> ini_list) {
-      size_ = 0;
-      first_ = last_ = nullptr;
+    List(std::initializer_list<T> ini_list) : size_{0}, first_{nullptr}, last_{nullptr} {
       for (auto& i : ini_list) {
         push_back(i);
       }
@@ -369,14 +367,21 @@ class List {
       if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
       return false;
     };
-    void pt_list() {
-      auto rnr = first_;
-      std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "->\n";
-      while (rnr != nullptr) {
-        std::cout << "<- " << rnr->prev << "[ " << rnr->value << " ] " << rnr->next << " -> ";
-        rnr = rnr->next;
+
+    /*
+    just a small helper for debugging: goes through the list, front to back, printing pointer to elements as well as their value and the list size
+    for convenience while testing it has a bool to toggle between output and no output
+    */
+    void pt_list(bool b) {
+      if (b) {
+        auto rnr = first_;
+        std::cout << "The selected list has the size " << size_ << " and contains elements with the following values: "<< first_ << "->\n";
+        while (rnr != nullptr) {
+          std::cout << "<- " << rnr->prev << "[ " << rnr->value << " ] " << rnr->next << " -> ";
+          rnr = rnr->next;
+        }
+        std::cout << "\n<-" << last_ <<"\n";
       }
-      std::cout << "\n<-" << last_ <<"\n";
     }
 
 
