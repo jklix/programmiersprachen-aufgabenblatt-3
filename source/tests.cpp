@@ -372,6 +372,7 @@ TEST_CASE("testing insert()","[insert]") {
   REQUIRE(it3.node->value == 1);
   REQUIRE(l.size() == 3);
 }
+
 //erase tests
 TEST_CASE("testing erase()", "[erase]") {
   bool print = false;
@@ -405,6 +406,29 @@ TEST_CASE("testing erase()", "[erase]") {
   ListIterator<int> it5 = l3.erase(l3.begin());
   REQUIRE(l3.empty());
   REQUIRE(it5.node == nullptr);
+}
+
+//vector-list-shenanigans
+TEST_CASE("testing if vector and list contain the same elements at the same position","[lst_eq_vec]") {
+  List<int> l {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
+  std::vector<int> vec;
+  std::copy(l.begin(), l.end(), std::back_inserter(vec));
+  REQUIRE(has_same_content(l, vec));
+  l.pop_front();
+  l.push_back(1);
+  REQUIRE(has_same_content(l, vec) == false);
+  List<int> l2{};
+  std::vector<int> vec2;
+  std::copy(l2.begin(), l2.end(), std::back_inserter(vec2));
+  REQUIRE(has_same_content(l2, vec2));
+  REQUIRE(l2.empty());
+  REQUIRE(vec2.empty());
+  List<int> l3{0};
+  std::vector<int> vec3;
+  std::copy(l3.begin(), l3.end(), std::back_inserter(vec3));
+  REQUIRE(has_same_content(l3, vec3));
+  REQUIRE(l3.empty() == false);
+  REQUIRE(vec3.empty() == false);
 }
 
 int main(int argc, char *argv[])

@@ -239,27 +239,31 @@ class List {
       }
     }
 
-    /* ... */
+    /* 
+    very similar to the insert() method, we need to check different edge-cases and act accordingly
+    if the node of the ListIterator is a nullpointer we return a nullptr, since that doesn't point to any element
+    if we get a pointer to the first element we can utilize pop_front() and return the new first_ pointer
+    same goes applies if the node points to the last element in the list (although then we return a nullpointer for the next element since ther is none)
+    If an element between two other elements should be deleted we first make two new ListIterators,
+    one that points to the element before our element and one that points to the element behind it.
+    we then delete the element in the middle and set the pointers from bf and bh to their new next / prev element
+    after that we decrease the size by one and return the ListIterator bh.
+    */
     ListIterator<T> erase(ListIterator<T> del) {
-      if (del.node == nullptr) {
+      if (del.node == first_) {
         pop_front();
         return{first_};
       }
       if ((del.node != nullptr) && (del.node->next != nullptr)) {
         ListIterator<T> bf{del.node->prev};
-        ListIterator<T> bh{del.next()};
+        ListIterator<T> bh{del.node->next};
         delete(del.node);
         bh.node->prev = bf.node;
-        if (bf.node != nullptr) {
-          bf.node->next = bh.node;
-        } 
-        else {
-          first_ = bh.node;
-        }
+        bf.node->next = bh.node;
         size_--;
         return bh;
       }
-      else {
+      if (del.node == last_) {
         pop_back();
       }
       return{nullptr};
@@ -464,6 +468,26 @@ List<T> operator+(List<T> const& lhs, List<T> const& rhs) {
   auto tmp2(rhs);
   for (auto const& i : tmp2) tmp1.push_back(i);
   return tmp1;
+}
+
+/*
+small function to test if a vector and list contain the same elements at the same position
+first we check if their size is the same and, if that is the case, if it also is zero.
+If the size is not zero we copy-construct a temporary list since we can't work with ListIterators otherwise
+we then initialize vecit with zero and use a range based for loop to iterate over the elements in the copied list
+for each element we check if it has the same value as the element found in the vector, then we increase vecit by one
+*/
+template <typename T>
+bool has_same_content (List<T> const& list, std::vector<T> const& vec) {
+  if (list.size() != vec.size()) return false;
+  if (list.size() == 0) return true;
+  List<int> tmp(list);
+  int vecit = 0;
+  for (auto const& i : tmp) {
+    if (i != vec[vecit]) return false;
+    vecit++;
+  }
+  return true;
 }
 
 #endif // # define BUW_LIST_HPP
