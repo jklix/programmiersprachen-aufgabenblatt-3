@@ -17,9 +17,6 @@ struct ListNode {
   ListNode* next = nullptr;
 };
 
-
-//TODO: Implementierung der Methoden des Iterators 
-//      (nach Vorlesung STL-1 am 09. Juni) (Aufgabe 3.12)
 template <typename T>
 struct ListIterator {
   using Self              = ListIterator<T>;
@@ -29,8 +26,9 @@ struct ListIterator {
   using difference_type   = ptrdiff_t;
   using iterator_category = std::bidirectional_iterator_tag;
 
+  //3.12
 
-  /* DESCRIPTION  operator*() returns the value which the node of the LiIt points to */
+  /* Operator*() returns the value which the node of the LiIt points to */
   T& operator*()  const {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
@@ -38,9 +36,9 @@ struct ListIterator {
     else {
       return node->value;
     }
-  } //call *it
+  }
 
-  /* DESCRIPTION  operator->() returns a pointer to the value which the node of the LiIt is pointing to */
+  /* Operator->() returns a pointer to the value which the node of the LiIt is pointing to */
   T* operator->() const {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
@@ -48,7 +46,7 @@ struct ListIterator {
     else {
       return &node->value;
     }
-  }  //call it->method() or it->member
+  }
 
 
   /* PREINCREMENT, call: ++it, advances one element forward */
@@ -60,8 +58,13 @@ struct ListIterator {
     return *this;
   }
 
-  /* POSTINCREMENT (signature distinguishes the iterators), 
-                    call:  it++, advances one element forward*/
+  /* 
+  POSTINCREMENT (signature distinguishes the iterators), advances one element forward
+  when the next node is a nullptr it has no prev pointer, so we initialiaze a ListIterator.
+  Since it wasn't initialiazed with a value it will just contain a nullptr.
+  we then iterate forward ba swapping our current ListIterator with the newly created one.
+  if the next node is not a nullptr we can just set our node to the next node and return the node we started with.
+  */
   ListIterator<T> operator++(int) {
     if(nullptr == node) {
       throw "Iterator does not point to valid node";
@@ -78,15 +81,15 @@ struct ListIterator {
   }
 
 
-  /* checks if the pointers of the nodes of the two ListIterators are the same */
+  /* Checks if the pointers of the nodes of the two ListIterators are the same. */
   bool operator==(ListIterator<T> const& x) const {
     return(node == x.node) ? true : false;
-  } // call it: == it
+  }
 
-  /* compares two ListIterators by using the previously implemented == operator */
+  /* Compares two ListIterators by using the previously implemented == operator. */
   bool operator!=(ListIterator<T> const& x) const {
     return(*this == x) ? false : true;
-  } // call it: != it
+  }
 
   /* Advances Iterator */
   ListIterator<T> next() const {
@@ -122,13 +125,14 @@ class List {
     using const_reference = T const&;
     using iterator        = ListIterator<T>;
 
-    /* default construction of an empty list with size zero and first_ as well as last_ being nullpointer */
+    /* 3.2 default construction of an empty list with size_ = 0 and first_ as well as last_ being nullpointer */
     List(int s = 0, ListNode<T>* p = nullptr): size_(s), first_(p), last_(p) {}
 
     /*
+    3.5
     Copy constructor creates a new, empty list and a pointer to a node. 
-    That pointer gets the value of the node of the original list which is copied into our new list by push_back() since we start at the beginning.
-    After that the pointer is set to the next node in the original list
+    That pointer gets the value of the node of the original list which is copied into our new list by push_back().
+    After that the pointer is set to the next node in the original list, this goes till the list sizes are equal (and all elements copied).
     */
     List(List const& list): size_{0}, first_{nullptr}, last_{nullptr} {
       auto rnr = list.first_;
@@ -139,8 +143,8 @@ class List {
 
     }
     /* 
-    move operator:
-    We build copy the member-vars directly into a new list, then set the values of the list we copied it from to 0 / nullptr to get a empty list 
+    3.9 move operator:
+    We copy the member-vars directly into a new list, then set the values of the list we copied it from to 0 / nullptr to get a empty list 
     */
     List(List&& rhs) : size_{rhs.size_}, first_{rhs.first_}, last_{rhs.last_} {
       rhs.size_ = 0;
@@ -154,20 +158,24 @@ class List {
       }
     }
 
-    /* Implementation of the unifying copy and swap -assignment operator, based on the provided slides */
+    /* 3.6 Implementation of the unifying copy and swap -assignment operator, based on the provided slides. */
     List& operator=(List rhs) {
       swap(rhs);
       return *this;
     }
 
-    /* related to 3.6: Small helper function to swap the fist and last pointers of two lists */
+    /* Related to 3.6: Small helper function to swap the fist and last pointers of two lists */
     void swap(List& l) {
       std::swap(first_, l.first_);
       std::swap(last_, l.last_);
       std::swap(size_, l.size_);
     }
 
-    /* checks if two lists are equal (in element count and -position) or not using comp_list() and returns a bool based on that */
+    /* 
+    3.8
+    Checks if two lists are equal (in element count and -position) or not using comp_list()
+    and returns a bool based on that. 
+    */
     bool operator==(List const& rhs) const
     { 
       return comp_list(rhs);
@@ -179,22 +187,22 @@ class List {
       //return (comp_list(rhs) ? false : true);
     }
 
-    /* calls clear() to destroy the list */
+    /* 3.4 Calls clear() to destroy the list. */
     ~List() {
       clear();
     }
 
-    /* List Iterator, pointing to the first element in the list */
+    /* 3.11 List Iterator, pointing to the first element in the list. */
     ListIterator<T> begin() {
       return {first_};
     }
 
-    /* List Iterator pointing to the element behind the last element of the List */
+    /* 3.11 List Iterator pointing to the element behind the last element of the list. */
     ListIterator<T> end() {
       return {nullptr};
     }
 
-    /* calls pop_front() as long as the size isn't 0 */ 
+    /* 3.4 Calls pop_front() as long as the size isn't 0. */ 
     void clear() {
       while (size_ != 0) {
         pop_front();
@@ -203,21 +211,13 @@ class List {
 
 
     /*
-    insert creates a new ListNode n with the value val and a ListIterator bh (behind) using bf.next()
-    then we check where the element is added: 
-
-    an element can be added between two elements, then we need to set their next / prev pointers to our new node and also its next and prev pointer to those nodes respectively
-
-    an element can be added to a empty list, then we just need to set the first_ and last_ - pointers to our new element (using push())
-
-    an element can be added at the front of a list, then we need to change first_ and set it to our element after we set the prev pointer of the former first node to the new Node
-    and the next pointer of the new node to the former first. (using push_front())
-
-    an element can be added at the very back of a list, then we'd need to change the  last_ pointer to the new node and set the next pointer from the previous last node to our new last node
-    and its prev pointer to the former last node (using push_back())
-
-    after that has happened we increase the list size by one. Since all the push methods do that anyway (as well as uppdating the first_ and last_ pointers) 
-    we only have to do that for our first if-case
+    3.13
+    for Insert we can partly utilize push_*;
+    If the node of the ListIterator in a nullpointer, we can use push front, since it can handle both empty and non-empty lists
+    When inserting between two elements we first get a ListIterator from the next element.
+    This way we can initialize our new element directly with the right pointers. After that we just need to update the pointer
+    of the bf (before) and bh (behind) nodes so that they point to the newly inserted node and increase the size by one.
+    Lastly we set bf to point to our new elementby using bf.next()
     */
     ListIterator<T> insert(T const& val, ListIterator<T> bf) {
       if (bf.node == nullptr) {
@@ -239,15 +239,16 @@ class List {
       }
     }
 
-    /* 
-    very similar to the insert() method, we need to check different edge-cases and act accordingly
-    if the node of the ListIterator is a nullpointer we return a nullptr, since that doesn't point to any element
-    if we get a pointer to the first element we can utilize pop_front() and return the new first_ pointer
-    same goes applies if the node points to the last element in the list (although then we return a nullpointer for the next element since ther is none)
+    /*
+    3.14
+    Very similar to the insert() method, we need to check different edge-cases and act accordingly:
+    If the node of the ListIterator is a nullpointer we return a nullptr, since that isn't pointing to any element.
+    If we get a pointer to the first element we can utilize pop_front() and return the new first_ pointer.
+    The same applies if the node points to the last element in the list (although we then return a nullpointer for the next element since there is none).
     If an element between two other elements should be deleted we first make two new ListIterators,
     one that points to the element before our element and one that points to the element behind it.
-    we then delete the element in the middle and set the pointers from bf and bh to their new next / prev element
-    after that we decrease the size by one and return the ListIterator bh.
+    We then delete the element in the middle and set the pointers from bf and bh to their new next / prev element.
+    After that we decrease the size by one and return the ListIterator bh.
     */
     ListIterator<T> erase(ListIterator<T> del) {
       if (del.node == first_) {
@@ -270,10 +271,11 @@ class List {
     }
 
     /*
-    reversing the order of element-values in the list by flipping the pointers of the nodes
-    if the list size is smaller than 2 we don't have to do anything
-    in every other case we have a runner node, starting at "first_" and working its way trough the list, flipping "prev" and "next" pointer using tmp as storage
-    when finished it then flips the first and last pointers of the list
+    3.7
+    Reversing the order of element-values in the list by flipping the pointers of the nodes.
+    If the list size is smaller than 2 we don't have to do anything.
+    In every other case we have a runner node, starting at "first_" and working its way trough the list, flipping "prev" and "next" pointer using tmp as storage.
+    When it has finished it then flips the first and last pointers of the list
     */
     void reverse() {
       if (size_ < 2) return;
@@ -290,8 +292,9 @@ class List {
     }
 
     /*
-    small method that gets called if one wants to add a node to an empty list: it creates a new node containing "element", 
-    prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1
+    3.3
+    Small method that gets called if one wants to add a node to an empty list: It creates a new node containing "element", 
+    prev and next being defualt-initialiazed as nullptr and first_ and last_ are set to point to the new node and the size is set to 1.
     */
     void push(T const& element) {
       ListNode<T>* nw = new ListNode<T>{element};
@@ -300,9 +303,10 @@ class List {
     }
 
     /*
-    tests if the list is empty, if it is it calls push()
-    if not we make a of the first_ pointer and create a new ListNode containing "element" since we know that the node will be added at the front of the list,
-    we can set the prev pointer of the node to nullptr and the next pointer to our previous first_ we then set the pointer of the prev pointer of the former first node
+    3.3
+    Tests if the list is empty, if it is it calls push()
+    If not we make a copy of the first_ pointer and create a new ListNode containing "element". Since we know that the node will be added at the front of the list,
+    we can set the prev pointer of the node to nullptr and the next pointer to our previous first_. We then set the pointer of the prev pointer of the former first node
     to the newly added node and set first_ to our new first node. After that we increment the size of the list by one.
     */
     void push_front(T const& element) {
@@ -315,8 +319,9 @@ class List {
       }
     }
 
-    /* 
-    we do the exact same thing as in push_front(), with the exception that "first" is swapped with "last", "front" with "back" and "prev" and next" have switched places.
+    /*
+    3.3 
+    We do the exact same thing as in push_front(), with the exception that "first" is swapped with "last", "front" with "back" and "prev" and next" have switched places.
     */
     void push_back(T const& element) {
       if(empty()) push(element);
@@ -329,8 +334,9 @@ class List {
     }
 
     /*
-    small method that gets called if pop_front() or pop_back() is called and list size is 1
-    it deletes the single list object, sets the pointers from first_ and last_ to nullptr and sets the size to zero
+    3.3
+    small method that gets called if pop_front() or pop_back() are called and list size is 1.
+    It deletes the single list element, sets the pointers first_ and last_ to nullptr and the size to zero
     */
     void pop() {
       delete(first_);
@@ -338,11 +344,12 @@ class List {
       size_ = 0;
     }
 
-    /* 
-    tests if the list is empty, if so it throws an exception
-    if the size of the list is one it calls pop()
-    in all other cases it makes a copy of the pointers first_ and first_->next, the first two nodes in the list,
-    sets first_ to the second node and deletes the former first node, then sets the prev-pointer of the new first node to nullptr and increments size_ by one
+    /*
+    3.3
+    Tests if the list is empty, if so it throws an exception.
+    If the size of the list is one it calls pop().
+    In all other cases it makes a copy of the pointers first_ and first_->next, the first two nodes in the list,
+    sets first_ to the second node and deletes the former first node, then sets the prev-pointer of the new first node to nullptr and increments size_ by one.
     */
     void pop_front() {
       if(empty()) {
@@ -360,8 +367,9 @@ class List {
     }
 
     /*
-    does basically as pop_front(), with the exception that we now use the last and second last node of our list
-    so we make the copys, set last_ to the second lst node, delete the former last node and set the next pointer of the new last node to nullptr and increments size_ by one
+    3.3
+    Does basically the same as pop_front(), with the exception that we now use the last and second last node of our list.
+    We make the copys, set last_ to the second lst node, delete the former last node and set the next pointer of the new last node to nullptr and increments size_ by one
     */
     void pop_back() {
       if(empty()) {
@@ -380,7 +388,7 @@ class List {
     }
 
     /* returns the value of the first node */
-    T& front() {
+    T& front() const {
       if(empty()) {
         throw "List is empty";
       }
@@ -388,20 +396,20 @@ class List {
     }
 
     /* returns the value of the last node*/
-    T& back() {
+    T& back() const {
       if(empty()) {
         throw "List is empty";
       }
       return last_->value;
     }
 
-    /* checks if the size of the list is zero and acts and acts accordingly */
+    /* 3.2 checks if the size of the list is zero and acts and acts accordingly */
     bool empty() const {
       return (size_ == 0) ? true : false;
     };
 
 
-    /* returns the size of the list */
+    /* 3.2 returns the size of the list */
     std::size_t size() const{     
       return size_;
     };
@@ -424,13 +432,13 @@ class List {
           rnr_l1 = rnr_l1->next;
           rnr_l2 = (reverse ? rnr_l2->prev : rnr_l2->next);
       }
-      if ((rnr_l1 == nullptr) && (rnr_l2 == nullptr)) return true;
-      return false;
+      return true;
     };
 
     /*
-    just a small helper for debugging: goes through the list, front to back, printing pointer to elements as well as their value and the list size
-    for convenience while testing it has a bool to toggle between output and no output
+    -.--
+    Just a small helper for debugging: goes through the list, front to back, printing pointer to elements as well as their value and the list size.
+    For convenience while testing it has a bool to toggle between output and no output.
     */
     void pt_list(bool b) {
       if (b) {
@@ -453,6 +461,7 @@ class List {
 };
 
 /* 
+3.7
 reverse() first creates a new List, deep-copying "l", then calls the member function reverse() on the newly created list and returns it.
  */
 template<typename T>
@@ -461,7 +470,11 @@ List<T> reverse(List<T> const& l) {
   revl.reverse();
   return revl;
 }
-/* currently not working at all yay */
+/* 
+3.10
+Creates copies of the operators because we want to be able to use ListIterators.
+Then we add to tmp1 all the element values of tmp2 using a range-based for loop before returning tmp1.
+*/
 template<typename T>
 List<T> operator+(List<T> const& lhs, List<T> const& rhs) {
   auto tmp1(lhs);
@@ -471,11 +484,12 @@ List<T> operator+(List<T> const& lhs, List<T> const& rhs) {
 }
 
 /*
-small function to test if a vector and list contain the same elements at the same position
-first we check if their size is the same and, if that is the case, if it also is zero.
-If the size is not zero we copy-construct a temporary list since we can't work with ListIterators otherwise
-we then initialize vecit with zero and use a range based for loop to iterate over the elements in the copied list
-for each element we check if it has the same value as the element found in the vector, then we increase vecit by one
+3.15
+Small function to test if a vector and list contain the same elements at the same position.
+First we check if their size is the same and, if that is the case, if it also is zero.
+If the size is not zero we copy-construct a temporary list since we can't work with ListIterators otherwise.
+We then initialize vecit with zero and use a range based for loop to iterate over the elements in the copied list.
+For each element we check if it has the same value as the element found in the vector, then we increase vecit by one.
 */
 template <typename T>
 bool has_same_content (List<T> const& list, std::vector<T> const& vec) {

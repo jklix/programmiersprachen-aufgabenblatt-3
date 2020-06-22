@@ -274,7 +274,7 @@ TEST_CASE ("testing the move constructor","[constructor]") {
   List<int> list2 = std::move(list);
   REQUIRE (0 == list.size());
   REQUIRE (list.empty());
-  REQUIRE (4 == list2.size());
+  REQUIRE (4 == list2.size()); //<-
   list2.push_back(0);
   list2.push_back(-1);
   auto l2tmp(list2);
@@ -358,7 +358,7 @@ TEST_CASE("testing + for lists","op_plus") {
 #include "sub_tests/iterators/operator_does_not_equal.test"
 #include "sub_tests/iterators/operator_iterate_forward.test"
 
-//insert tests
+//insert tests, pretty short but testing every case
 TEST_CASE("testing insert()","[insert]") {
   List<int> l{};
   REQUIRE(l.empty());
@@ -398,6 +398,7 @@ TEST_CASE("testing erase()", "[erase]") {
   List<int> l3tst{3, 4};
   REQUIRE(l3tst == l1);
   //throws an error that the list is empty but causes no termination, tested by setting mty to true
+  //this is intended because you shouldn't be able to remove an element from an empty list
   if (mty) {
     ListIterator<int> it4 = l2.erase(l2.begin());
     REQUIRE(l2.empty());
