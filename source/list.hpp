@@ -240,24 +240,29 @@ class List {
     }
 
     /* ... */
-    ListIterator<T> erase(T const& val, ListIterator<T> bf) {
-      if (bf.node == nullptr) {
+    ListIterator<T> erase(ListIterator<T> del) {
+      if (del.node == nullptr) {
         pop_front();
         return{first_};
       }
-      if ((bf.node != nullptr) && (bf.node->next != nullptr)) {
-        ListIterator<T> del{bf.next()};
+      if ((del.node != nullptr) && (del.node->next != nullptr)) {
+        ListIterator<T> bf{del.node->prev};
         ListIterator<T> bh{del.next()};
-        delete(del);
-        bf.node->next = bh.node;
+        delete(del.node);
         bh.node->prev = bf.node;
+        if (bf.node != nullptr) {
+          bf.node->next = bh.node;
+        } 
+        else {
+          first_ = bh.node;
+        }
         size_--;
         return bh;
       }
       else {
-        pop_back(val);
-        return{nullptr};
+        pop_back();
       }
+      return{nullptr};
     }
 
     /*

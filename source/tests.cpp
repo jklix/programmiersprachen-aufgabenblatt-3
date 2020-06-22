@@ -372,6 +372,40 @@ TEST_CASE("testing insert()","[insert]") {
   REQUIRE(it3.node->value == 1);
   REQUIRE(l.size() == 3);
 }
+//erase tests
+TEST_CASE("testing erase()", "[erase]") {
+  bool print = false;
+  bool mty = false;
+  List<int> l1{1, 2, 3, 4, 5};
+  List<int> l2{};
+  List<int> l3{1};
+  ListIterator<int> it1 = l1.erase(l1.begin().next());
+  l1.pt_list(print);
+  REQUIRE(l1.size() == 4);
+  REQUIRE(it1.node->value == 3);
+  List<int> l1tst{1, 3, 4, 5};
+  REQUIRE(l1tst == l1);
+  ListIterator<int> it2 = l1.erase(l1.begin());
+  REQUIRE(l1.size() == 3);
+  REQUIRE(it2.node->value == 3);
+  List<int> l2tst{3, 4, 5};
+  REQUIRE(l2tst == l1);
+  ListIterator<int> it3 = l1.erase(l1.begin().next().next());
+  l1.pt_list(print);
+  REQUIRE(l1.size() == 2);
+  REQUIRE(it3.node == nullptr);
+  List<int> l3tst{3, 4};
+  REQUIRE(l3tst == l1);
+  //throws an error that the list is empty but causes no termination, tested by setting mty to true
+  if (mty) {
+    ListIterator<int> it4 = l2.erase(l2.begin());
+    REQUIRE(l2.empty());
+    REQUIRE(it4.node == it3.node);
+  }
+  ListIterator<int> it5 = l3.erase(l3.begin());
+  REQUIRE(l3.empty());
+  REQUIRE(it5.node == nullptr);
+}
 
 int main(int argc, char *argv[])
 {
